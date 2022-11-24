@@ -5,26 +5,38 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_test/hive_test.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:todo_application_using_bloc/data_layer/db.dart';
+import 'package:todo_application_using_bloc/data_layer/hive_payload.dart';
+import 'package:todo_application_using_bloc/domain_layer/error.dart';
+import 'package:todo_application_using_bloc/domain_layer/status.dart';
+import 'package:todo_application_using_bloc/domain_layer/task_model.dart';
 
 import 'package:todo_application_using_bloc/main.dart';
+const TEST_MOCK_STORAGE = './test/fixtures/core';
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+Future<void> main() async {
+  setUp(() async {
+    await setUpTestHive();
+    Hive.registerAdapter(HivePayloadAdapter());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
   });
+
+  tearDown(() async {
+    await tearDownTestHive();
+  });
+  test("Create New Task", () async {
+    final db = TaskDb();
+    final newTask = Task(id: "qwerty", title: "hello", time: Duration(minutes: 1), status: Status.todo);
+    final Either<TaskError, bool> response = await db.addTask(task: newTask);
+    response.fold((left) => print(left.message), (right) => null);
+    expect(response.isRight, true);
+  });
+
 }
