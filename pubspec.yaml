@@ -45,6 +45,8 @@ dependencies:
   either_dart: ^0.3.0
   flip_card: ^0.6.0
   duration_picker: ^1.1.1
+  path_provider: ^2.0.11
+  hive_test: ^1.0.1
 
 dev_dependencies:
   flutter_test:

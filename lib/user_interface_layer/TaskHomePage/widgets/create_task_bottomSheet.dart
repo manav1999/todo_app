@@ -28,86 +28,88 @@ class _CreateTaskBottomSheetState extends State<CreateTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-            16, 16, 16, MediaQuery.of(context).padding.bottom),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: titleController,
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "Title Required";
-                  } else if (!validCharacters.hasMatch(val)) {
-                    return "Invalid input";
-                  }
-                },
-                inputFormatters: [LengthLimitingTextInputFormatter(15)],
-                decoration: const InputDecoration(
-                  labelText: "Title *",
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: descController,
-                inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                decoration: const InputDecoration(
-                  labelText: "Description",
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextButton(
-                onPressed: () async {
-                  Duration? time;
-                  await showDurationPicker(
-                          context: context,
-                          initialTime: const Duration(minutes: 1),
-                          baseUnit: BaseUnit.minute)
-                      .then((value) {
-                    setState(() {
-                      time = value;
-                    });
-                  });
-
-                  timeController.text = time?.inMinutes.toString() ?? "";
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: timeController,
-                    validator: (val) {
-                      if (val == null || val.isEmpty) {
-                        return "Duration Required";
-                      } else if (int.parse(val) > 10) {
-                        return "Invalid input";
-                      }
-                    },
-                    decoration: const InputDecoration(
-                        labelText: "Duration", hintText: "Select Duration"),
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() == true) {
-                      context.read<TaskBloc>().add(CreateTaskEvent(
-                          title: titleController.text,
-                          desc: descController.text,
-                          duration: Duration(
-                              minutes: int.parse(timeController.text))));
-                      Navigator.pop(context);
+    return SingleChildScrollView(
+      child: Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(
+              16, 16, 16, MediaQuery.of(context).padding.bottom),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return "Title Required";
+                    } else if (!validCharacters.hasMatch(val)) {
+                      return "Invalid input";
                     }
                   },
-                  child: const Text("Create Task"))
-            ],
+                  inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                  decoration: const InputDecoration(
+                    labelText: "Title *",
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: descController,
+                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                  decoration: const InputDecoration(
+                    labelText: "Description",
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Duration? time;
+                    await showDurationPicker(
+                            context: context,
+                            initialTime: const Duration(minutes: 1),
+                            baseUnit: BaseUnit.minute)
+                        .then((value) {
+                      setState(() {
+                        time = value;
+                      });
+                    });
+
+                    timeController.text = time?.inMinutes.toString() ?? "";
+                  },
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: timeController,
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return "Duration Required";
+                        } else if (int.parse(val) > 10) {
+                          return "Invalid input";
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: "Duration", hintText: "Select Duration"),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() == true) {
+                        context.read<TaskBloc>().add(CreateTaskEvent(
+                            title: titleController.text,
+                            desc: descController.text,
+                            duration: Duration(
+                                minutes: int.parse(timeController.text))));
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text("Create Task"))
+              ],
+            ),
           ),
         ),
       ),

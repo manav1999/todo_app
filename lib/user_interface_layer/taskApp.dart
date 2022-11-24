@@ -17,6 +17,6 @@ class TaskApp extends StatelessWidget {
       BlocProvider(
         create: (context) => ViewToggleCubit(),
       )
-    ], child:  MaterialApp(home: TaskHomePage()));
+    ], child:  const MaterialApp(home: TaskHomePage()));
   }
 }

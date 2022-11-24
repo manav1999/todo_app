@@ -121,13 +121,13 @@ class _GridTaskWidgetState extends State<GridTaskWidget> {
                 ),
                 Center(
                   child: SizedBox(
-                    height: 18,
+                    height: 30,
                     child: OutlinedButton(
                       onPressed: () {
                         _cubit.startTimer();
                         _controller.toggleCard();
                       },
-                      child: Text(
+                      child: const Text(
                         "Start Timer",
                         style: TextStyle(fontSize: 14),
                       ),

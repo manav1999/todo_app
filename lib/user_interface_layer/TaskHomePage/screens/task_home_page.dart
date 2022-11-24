@@ -78,19 +78,20 @@ class _TaskHomePageState extends State<TaskHomePage> {
                                 child: Icon(Icons.delete)),
                           ),
                           secondaryBackground: Container(
-                            color: Colors.green,
+                            color: Colors.red,
                             child: const Align(
                                 alignment: Alignment.centerRight,
-                                child: Icon(Icons.check)),
+                                child: Icon(Icons.delete)),
                           ),
+
                           onDismissed: (direction) {
-                            if (direction == DismissDirection.startToEnd) {
+
                               _taskBloc.add(DeleteTask(state.task[index].id));
-                            } else if (direction ==
+                             /*else if (direction ==
                                 DismissDirection.endToStart) {
                               _taskBloc.add(UpdateTaskComplete(
                                   Status.done, state.task[index].id));
-                            }
+                            }*/
                           },
                           key: Key(state.task[index].id),
                           child: ListTaskWidget.navigate(
