@@ -8,6 +8,7 @@ import 'package:todo_application_using_bloc/domain_layer/error.dart';
 import 'package:todo_application_using_bloc/domain_layer/task_model.dart';
 
 class TaskDb {
+  //Initalize Database
   static Future<void> initDb() async {
     debugPrint("INIT HIVE");
     await Hive.initFlutter();

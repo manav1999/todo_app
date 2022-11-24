@@ -18,7 +18,7 @@ class TimerCubit extends Cubit<TimerState>  {
         timer?.cancel();
       }
     remainingTime = time;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _setCountDown();
     });
   }
